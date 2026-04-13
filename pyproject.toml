@@ -1,0 +1,6 @@
+[
+    "textual",
+    "psutil",
+    "pytest",
+    "pytest-asyncio"
+]
