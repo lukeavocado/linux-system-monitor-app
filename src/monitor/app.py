@@ -34,8 +34,8 @@ class PerformanceApp(App):
 
     #dashboard {
         layout: grid;
-        grid-size: 2;
-        grid-columns: 1fr 1fr;
+        grid-size: 3;
+        grid-columns: 1fr 1fr 1fr;
         grid-rows: 1fr 1fr;
         padding: 1;
     }
@@ -78,6 +78,7 @@ class PerformanceApp(App):
             yield MetricWidget("Network RX", "MB/s", id="net-rx-widget")
             yield MetricWidget("Network TX", "MB/s", id="net-tx-widget")
             yield MetricWidget("GPU Usage", "%", id="gpu-widget")
+            yield MetricWidget("GPU Mem", "MB", id="gpu-mem-widget")
         yield Footer()
 
     def on_mount(self) -> None:
@@ -106,8 +107,10 @@ class PerformanceApp(App):
         gpu = self.provider.get_gpu_usage()
         if gpu.get("error"):
             self.query_one("#gpu-widget").value = "N/A"
+            self.query_one("#gpu-mem-widget").value = "N/A"
         else:
             self.query_one("#gpu-widget").value = f"{gpu['utilization']:.1f}"
+            self.query_one("#gpu-mem-widget").value = f"{gpu['memory_used']:.0f}"
 
 if __name__ == "__main__":
     app = PerformanceApp()
